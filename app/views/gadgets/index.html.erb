@@ -1,0 +1,30 @@
+<h1>Gadgets</h1>
+
+<% if @error %>
+  <p style="color:red">Error: <%= @error.class %>: <%= @error.message %></p>
+<% end %>
+
+<h2>New Gadget</h2>
+
+<%= form_with url: gadgets_path, method: :post, local: true do |f| %>
+  <label for="gadget_id">ID</label>
+  <%= f.text_field :id, id: "gadget_id" %>
+  <label for="gadget_version">Version</label>
+  <%= f.text_field :version, id: "gadget_version" %>
+  <label for="gadget_name">Name</label>
+  <%= f.text_field :name, id: "gadget_name" %>
+  <%= f.submit "Create Gadget" %>
+<% end %>
+
+<% if @gadgets.any? %>
+  <ul>
+    <% @gadgets.each do |g| %>
+      <li>
+        <strong><%= g.id %></strong> / <%= g.version %> — <%= g.name %>
+        <%= button_to "Delete", gadget_path(g.id, version: g.version), method: :delete, form: { data: { turbo_confirm: "Delete gadget #{g.id}/#{g.version}?" } } %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No gadgets found.</p>
+<% end %>

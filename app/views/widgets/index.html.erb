@@ -1,0 +1,26 @@
+<h1>Widgets</h1>
+
+<% if @error %>
+  <p style="color:red">Error: <%= @error.class %>: <%= @error.message %></p>
+<% end %>
+
+<h2>New Widget</h2>
+
+<%= form_with url: widgets_path, method: :post, local: true do |f| %>
+  <label for="widget_name">Name</label>
+  <%= f.text_field :name, id: "widget_name" %>
+  <%= f.submit "Create Widget" %>
+<% end %>
+
+<% if @widgets.any? %>
+  <ul>
+    <% @widgets.each do |w| %>
+      <li>
+        <strong><%= w.id %></strong> — <%= w.name %>
+        <%= button_to "Delete", widget_path(w.id), method: :delete, form: { data: { turbo_confirm: "Delete widget #{w.id}?" } } %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No widgets found.</p>
+<% end %>
